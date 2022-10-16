@@ -1,4 +1,4 @@
-const tips = require('express').Router();
+const notes = require('express').Router();
 const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
 const { v4: uuidv4 } = require('uuid');
 
@@ -14,10 +14,11 @@ notes.get('/', (req, res) => {
 notes.post('/', (req, res) => {
     console.log(req.body);
 
-    const { text } = req.body;
+    const { title, text } = req.body;
 
     if (req.body) {
         const newNote = {
+            title,
             text,
             note_id: uuidv4(),
         };
