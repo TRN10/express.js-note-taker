@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 // GET route for retrieving saved notes
 
 notes.get('/', (req, res) => {
-    readFromFile('./db.json').then((data) => res.json(JSON.parse(data)));
+    readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
 
@@ -23,7 +23,7 @@ notes.post('/', (req, res) => {
             note_id: uuidv4(),
         };
 
-        readAndAppend(newNote, './db.json');
+        readAndAppend(newNote, './db/db.json');
         res.json(`note added successfully 🚀`);
     } else {
         res.error('Error in adding note');
