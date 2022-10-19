@@ -1,17 +1,18 @@
 const router = require('express').Router();
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
+const { readFromFile, readAndAppend, writeToFile } = require('../helpers/fsUtils');
 const { v4: uuidv4 } = require('uuid');
+
 
 // GET route for retrieving saved notes
 
-router.get('/', (req, res) => {
+router.get('/notes', (req, res) => {
     readFromFile('./db/db.json').then((data) => res.json(JSON.parse(data)));
 });
 
 
 // POST Route for saving note
 
-router.post('/', (req, res) => {
+router.post('/notes', (req, res) => {
     console.log(req.body);
 
     const { title, text } = req.body;
@@ -20,7 +21,7 @@ router.post('/', (req, res) => {
         const newNote = {
             title,
             text,
-            note_id: uuidv4(),
+            id: uuidv4(),
         };
 
         readAndAppend(newNote, './db/db.json');
@@ -33,10 +34,18 @@ router.post('/', (req, res) => {
 // API route for deleting note
 
 router.delete('/notes/:id', (req, res) => {
-    store
-        .deleteNote(req.params.id)
+    readFromFile('./db/db.json')
+        .then((notes) => {
+
+            return JSON.parse(notes).filter(n => n.id !== req.params.id)
+        })
+        .then((updatedNotes) => writeToFile('./db/db.json', updatedNotes))
+
         .then(() => res.json({ ok: true }))
-        .catch((err) => res.status(500).json(err))
+        .catch((err) => {
+            console.log(err)
+            res.status(500).json(err)
+        })
 })
 
 module.exports = router;
