@@ -28,4 +28,4 @@ This is an application which allows the user to create, store and delete notes. 
 https://github.com/TRN10/express.js-note-taker
 
 ##### Below is a link to the deployed application in Heroku:
-https://github.com/TRN10/express.js-note-taker
+https://peaceful-bayou-21485.herokuapp.com/
